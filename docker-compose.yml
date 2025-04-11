@@ -1,0 +1,22 @@
+services:
+  kasmvnc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kasmvnc-gui
+    privileged: true # FUSE를 위한 권한 설정
+    volumes:
+      - /dev/fuse:/dev/fuse
+      - ./data:/home/kasm-user/data
+    ports:
+      - "6901:6901"
+    environment:
+      - RESOLUTION=1920x1080
+      - VNC_PASSWORD=password  # 원하는 비밀번호로 변경하세요
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
+    restart: unless-stopped 
